@@ -11,20 +11,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:bmi_calc/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+
+  testWidgets("Height Only Entered", (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
+    expect(find.byKey(Key('height')), findsOneWidget);
+    expect(find.byType(RaisedButton), findsOneWidget);
+    await tester.enterText(find.byKey(Key('height')), '1');
+    await tester.tap(find.byType(RaisedButton));
+    await tester.pumpAndSettle();
+    expect(find.text('Please enter the required value!'), findsOneWidget);
+    expect(find.byType(AlertDialog), findsNothing);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  });
+  testWidgets("Height & Weight Entered", (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp());
+    expect(find.byKey(Key('height')), findsOneWidget);
+    expect(find.byKey(Key('weight')), findsOneWidget);
+    expect(find.byType(RaisedButton), findsOneWidget);
+    await tester.enterText(find.byKey(Key('height')), '1');
+    await tester.enterText(find.byKey(Key('weight')), '1');
+    await tester.tap(find.byType(RaisedButton));
+    await tester.pumpAndSettle();
+    expect(find.text(''), findsOneWidget);
+    expect(find.byType(AlertDialog), findsOneWidget);
   });
 }
